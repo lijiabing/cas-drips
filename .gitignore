@@ -1,0 +1,8 @@
+﻿#忽略target文件夹下的文件
+target
+#忽略以下文件
+*.log
+*.class
+*.iml
+.idea
+

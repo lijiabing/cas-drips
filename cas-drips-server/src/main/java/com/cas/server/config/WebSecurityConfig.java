@@ -14,9 +14,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-
-
         //添加单点登录的过滤器
         http
                 .authorizeRequests()
@@ -26,7 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                .loginPage("/login/cas")
                 .permitAll()
                 .and()
                 .logout()

@@ -9,6 +9,7 @@ import org.springframework.web.util.WebUtils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -23,18 +24,19 @@ public class UserService {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    public void checkLogin(HttpServletRequest request, HttpServletResponse response){
+    public void checkLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Object uname=request.getParameter("username");
         Map<String,String[]> map=request.getParameterMap();
-        String username=map.get("username")[0];
-        String password=map.get("password")[0];
+        String username=map.get("amp;username")[0];
+        String password=map.get("amp;password")[0];
         if(username.equals("123")&&password.equals("1234")){
             User user=new User();
             user.setUsername(username);
             user.setPassword(password);
 
-            System.out.println(request.getAttribute("service"));
+            System.out.println(request.getParameter("service"));
             //发放票据
-//           response.sendRedirect();
+           response.sendRedirect(request.getParameter("service"));
         }
 
 

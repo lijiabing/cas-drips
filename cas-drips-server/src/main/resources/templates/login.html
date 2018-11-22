@@ -12,11 +12,21 @@
     <link href="/plugin/font-awesome-4.7.0/css/font-awesome.css?v=4.7.0" rel="stylesheet"/>
     <link href="/css/style.css" rel="stylesheet"/>
     <script>
-        function relocation() {
-           var service= Object.data.toJSON();
-            console.log(service);
-            window.location.replace(service)
+        function relocation(username,password) {
+            var s1=username.value;
+            var s2=password.value;
+            var s3=getQueryString("service");
+            window.location.href="http://127.0.0.1:8080/login?service="+s3+"&amp;username="+s1+"&amp;password="+s2;
+            <!--document.getElementById('form1').action="http://127.0.0.1:8080/login?service="+s3+"&amp;username="+s1+"&amp;password="+s2;-->
+            <!--document.getElementById("form1").submit();-->
         }
+        function getQueryString (name) {
+               var ll=location.href;
+               var args=ll.split("=");
+               return args[1];
+        }
+    　　
+
     </script>
 
 </head>
@@ -26,7 +36,7 @@
     <div class="row">
         <div class="col-sm-12">
 
-            <form class="m-t" role="form" action="relocation()" method="post">
+            <form id="form1" class="m-t" role="form"  method="post">
                 <p class="m-t-md">欢迎登录</p>
                 <div class="form-group">
                     <div class="uname"/> <input name="username" type="text" class="form-control" placeholder="用户名" required=""/>
@@ -34,8 +44,9 @@
                 <div class="form-group">
                     <div class="pword"/><input name="password" type="password" class="form-control" placeholder="密码" required=""/>
                 </div>
-                <button type="submit" class="btn" >登 录</button>
+
             </form>
+            <button type="button" class="btn" onclick="relocation(form1.username,form1.password)" >登 录</button>
         </div>
     </div>
 </div>

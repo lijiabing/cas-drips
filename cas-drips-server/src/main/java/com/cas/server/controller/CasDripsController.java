@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Created by Administrator on 2018\11\20 0020.
@@ -18,8 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 public class CasDripsController {
     @Autowired
     private UserService userService;
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public void login(HttpServletRequest request,HttpServletResponse response){
+    @RequestMapping(value = "/login",method = RequestMethod.GET)
+    public void login(HttpServletRequest request,HttpServletResponse response) throws IOException {
         userService.checkLogin(request,response);
     }
 }

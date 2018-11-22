@@ -9,25 +9,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class Casrop {
 
-    @Value("${cas.server.host.url}")
-    private String casServerUrl;
-    @Value("${cas.server.host.login_url:/login/cas}")
+    @Value("${cas.server.host.login_url:http://127.0.0.1:8080/login/cas}")
     private String casServerLoginUrl;
-    @Value("${app.server.host.url}")
-    private String appServerUrl;
-    @Value("${app.login.url:/login}")
-    private String appLoginUrl;
-    @Value("${cas.server.ticket.validate.url:${cas.server.host.url}}")
+    @Value("${cas.server.ticket.validate.url:http://127.0.0.1:8080/cas/validate}")
     private String ticketValidatorUrl;
-
-
-    public String getCasServerUrl() {
-        return casServerUrl;
-    }
-
-    public void setCasServerUrl(String casServerUrl) {
-        this.casServerUrl = casServerUrl;
-    }
 
     public String getCasServerLoginUrl() {
         return casServerLoginUrl;
@@ -35,22 +20,6 @@ public class Casrop {
 
     public void setCasServerLoginUrl(String casServerLoginUrl) {
         this.casServerLoginUrl = casServerLoginUrl;
-    }
-
-    public String getAppServerUrl() {
-        return appServerUrl;
-    }
-
-    public void setAppServerUrl(String appServerUrl) {
-        this.appServerUrl = appServerUrl;
-    }
-
-    public String getAppLoginUrl() {
-        return appLoginUrl;
-    }
-
-    public void setAppLoginUrl(String appLoginUrl) {
-        this.appLoginUrl = appLoginUrl;
     }
 
     public String getTicketValidatorUrl() {

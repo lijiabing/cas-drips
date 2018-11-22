@@ -8,34 +8,33 @@
     <title> - 登录</title>
     <meta name="keywords" content=""/>
     <meta name="description" content=""/>
-    <link href="css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="plugin/font-awesome-4.7.0/font-awesome.css?v=4.7.0" rel="stylesheet"/>
-    <link href="css/style.css" rel="stylesheet"/>
-    <!--[if lt IE 9]>
-    <meta http-equiv="refresh" content="0;ie.html" />
-    <![endif]-->
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/plugin/font-awesome-4.7.0/css/font-awesome.css?v=4.7.0" rel="stylesheet"/>
+    <link href="/css/style.css" rel="stylesheet"/>
     <script>
-        if (window.top !== window.self) {
-            window.top.location = window.location;
+        function relocation() {
+           var service= Object.data.toJSON();
+            console.log(service);
+            window.location.replace(service)
         }
     </script>
 
 </head>
 
-<body class="signin">
+<body class="signin" >
 <div class="signinpanel">
     <div class="row">
         <div class="col-sm-12">
 
-            <form class="m-t" role="form" action="index.html">
+            <form class="m-t" role="form" action="relocation()" method="post">
                 <p class="m-t-md">欢迎登录</p>
                 <div class="form-group">
-                    <input type="email" class="form-control" placeholder="用户名" required=""/>
+                    <div class="uname"/> <input name="username" type="text" class="form-control" placeholder="用户名" required=""/>
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" placeholder="密码" required=""/>
+                    <div class="pword"/><input name="password" type="password" class="form-control" placeholder="密码" required=""/>
                 </div>
-                <button type="submit" class="btn btn-primary block full-width m-b">登 录</button>
+                <button type="submit" class="btn" >登 录</button>
             </form>
         </div>
     </div>

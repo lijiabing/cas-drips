@@ -14,6 +14,8 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.util.HashMap;
@@ -50,7 +52,7 @@ public class RedisConfig {
     @Value("${spring.redis.pool.min-idle:0}")
     private int min_idle;
 
-
+    private JedisPool jedisPool;
 
 
     @Bean
@@ -88,6 +90,7 @@ public class RedisConfig {
         config.setMaxIdle(max_idle);
         config.setMinIdle(min_idle);
         System.out.println("Redis jedisConnectionFactory init finished !");
+        jedisPool=new JedisPool(config,host,port);
         return jedisConnectionFactory;
     }
 
@@ -106,5 +109,9 @@ public class RedisConfig {
         redisTemplate.afterPropertiesSet();
         System.out.println("Redis redisTemplate init finished !");
         return redisTemplate;
+    }
+
+    public Jedis getJedis() {
+        return jedisPool.getResource();
     }
 }

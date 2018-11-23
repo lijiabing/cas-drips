@@ -23,4 +23,5 @@ public class CasClientConfig {
         CasClientFilter casClientFilter=new CasClientFilter(casrop);
         return new FilterRegistrationBean(casClientFilter,new ServletRegistrationBean[0]);
     }
+
 }

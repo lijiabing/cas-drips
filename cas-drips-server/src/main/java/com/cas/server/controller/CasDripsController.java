@@ -2,14 +2,12 @@ package com.cas.server.controller;
 
 import com.cas.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,13 +22,19 @@ public class CasDripsController {
     @Autowired
     private UserService userService;
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public void login(@RequestParam String username,@RequestParam String password,@RequestParam String service, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void login(@RequestParam String username, @RequestParam String password, @RequestParam String service, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         userService.checkLogin(username,password,service,request,response);
     }
+
     @RequestMapping(value = "/cas/validate",method = RequestMethod.GET)
-    public Map<String,Object> validateTicket(@RequestParam String ticket){
-        Map<String,Object> result=new HashMap<>();
-        result.put("validate",userService.ticketValidate(ticket));
-        return result;
+    public boolean validateTicket(@RequestParam String ticket, HttpServletRequest request,HttpServletResponse response) throws IOException {
+        return userService.ticketValidate(ticket,request,response);
     }
+
+//    @GetMapping("/oop")
+//    public String oop( HttpServletRequest request,HttpServletResponse response){
+//        HttpSession httpSession=request.getSession(false);
+//        System.out.println(httpSession==null?"session is null":httpSession.getAttribute("flag")==null?"flag is null":String.valueOf(httpSession.getAttribute("flag")));
+//        return "ss";
+//    }
 }

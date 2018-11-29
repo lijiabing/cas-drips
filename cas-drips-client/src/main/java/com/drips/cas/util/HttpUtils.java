@@ -15,18 +15,21 @@ import java.util.Map;
  */
 public class HttpUtils {
 
-    private static String CONTENT_TYPE= "application/x-www-form-urlencoded; charset=UTF-8";
+    private static String CONTENT_TYPE = "application/x-www-form-urlencoded; charset=UTF-8";
 
-    public static boolean doGet(String url)
-            throws Exception {
+    public static boolean doGet(String url) {
         HttpClient httpClient = HttpClientBuilder.create().build();
         HttpGet request = new HttpGet(url);
-        HttpResponse  httpResponse=httpClient.execute(request);
-        ObjectMapper objectMapper=new ObjectMapper();
-        Map map=objectMapper.readValue(httpResponse.getEntity().getContent(),Map.class);
-        Boolean result=(Boolean)map.get("validate");
-        System.out.println(result.booleanValue());
-        return result==null?false:result.booleanValue();
+        try {
+            HttpResponse httpResponse = httpClient.execute(request);
+            ObjectMapper objectMapper = new ObjectMapper();
+            Boolean result = objectMapper.readValue(httpResponse.getEntity().getContent(), Boolean.class);
+            return result == null ? false : result.booleanValue();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return false;
+        }
     }
 
 }

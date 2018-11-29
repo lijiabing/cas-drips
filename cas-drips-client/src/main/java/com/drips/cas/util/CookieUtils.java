@@ -21,7 +21,7 @@ public class CookieUtils {
             if(params.length==1){
                 continue;
             }
-            map.put(params[0],params[1]);
+            map.put(params[0].trim(),params[1].trim());
         }
         return map;
     }

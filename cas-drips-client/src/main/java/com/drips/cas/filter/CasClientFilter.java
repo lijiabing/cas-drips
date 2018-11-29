@@ -1,10 +1,13 @@
 package com.drips.cas.filter;
 
 import com.drips.cas.config.Casrop;
+import com.drips.cas.handler.LogoutHandler;
 import com.drips.cas.util.CookieUtils;
 import com.drips.cas.util.HttpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -24,7 +27,8 @@ public class CasClientFilter extends OncePerRequestFilter {
 
     private Logger logger = LoggerFactory.getLogger(CasClientFilter.class);
     private Casrop casrop;
-
+    @Autowired
+    private LogoutHandler logoutHandler;
 
     public CasClientFilter(Casrop casrop) {
         this.casrop = casrop;
@@ -34,8 +38,14 @@ public class CasClientFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        if(logoutHandler.isLogoutRequest(request)){//判断是否是登出请求  该判断必须在所有的filter之前
+            //如果是则清除 缓存的session以及ticket
+            logoutHandler.removeSession(request.getSession(false));
+        }
+
+
         HttpSession httpSession = request.getSession(false);
-        if (httpSession != null && (boolean) httpSession.getAttribute("hasLogin")) {//查看本地session是否缓存有用户信息    目前判断是否有已经授权登录的标识isLogin
+        if (httpSession != null && (boolean) httpSession.getAttribute("hasLogin")&&logoutHandler.hasTicket(httpSession)) {//查看本地session是否缓存有用户信息  其次查看本地是否缓存有ticket  两个都有的话说明登录过    目前判断是否有已经授权登录的标识isLogin以及是否有缓存ticket
             filterChain.doFilter(request, response);
             return;
         } else {
@@ -49,6 +59,8 @@ public class CasClientFilter extends OncePerRequestFilter {
                 if (HttpUtils.doGet(casrop.getTicketValidatorUrl() + "?ticket=" + ticket)) {
                     HttpSession httpSession1 = request.getSession();
                     httpSession1.setAttribute("isLogin", true);//相当于把用户信息放入本地session 目前只是做一个已经授权登录的标识
+                    //保存ticket和sessionid,用于登出
+                    logoutHandler.recodeSession(httpSession1.getId(),ticket);//目前未设置session过期时间
                     response.sendRedirect(request.getRequestURL().toString());
                 }
                 return;

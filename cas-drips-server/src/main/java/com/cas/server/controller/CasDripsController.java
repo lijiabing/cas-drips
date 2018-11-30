@@ -1,14 +1,20 @@
 package com.cas.server.controller;
 
+import com.cas.server.dao.TicketGrantToken;
 import com.cas.server.service.UserService;
+import com.cas.server.util.HttpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.SerializationUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,10 +37,8 @@ public class CasDripsController {
         return userService.ticketValidate(ticket,request,response);
     }
 
-//    @GetMapping("/oop")
-//    public String oop( HttpServletRequest request,HttpServletResponse response){
-//        HttpSession httpSession=request.getSession(false);
-//        System.out.println(httpSession==null?"session is null":httpSession.getAttribute("flag")==null?"flag is null":String.valueOf(httpSession.getAttribute("flag")));
-//        return "ss";
-//    }
+    @GetMapping(value = "/logout")
+    public void logout( HttpServletRequest request,HttpServletResponse response) throws IOException {
+        userService.logout(request,response);
+    }
 }

@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class Casrop {
 
-    @Value("${cas.server.host.login_url:http://127.0.0.1:8080/login/cas}")
+    @Value("${cas.server.host.login_url:http://127.0.0.1:8089/login/cas}")
     private String casServerLoginUrl;
-    @Value("${cas.server.ticket.validate.url:http://127.0.0.1:8080/cas/validate}")
+    @Value("${cas.server.ticket.validate.url:http://127.0.0.1:8089/cas/validate}")
     private String ticketValidatorUrl;
 
     public String getCasServerLoginUrl() {

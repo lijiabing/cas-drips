@@ -24,16 +24,13 @@ public class TicketUtil {
         return hash;
     }
 
-    public static String  encodeTGC(String... tgcs){
+    public static String  encodeTGC(String tgcs){
         if(StringUtils.isEmpty(tgcs)){
             return null;
         }
         StringBuffer sb=new StringBuffer();
         sb.append("TGC-");
-        for (int i=0;i<tgcs.length;i++){
-            sb.append(Base64Utils.encodeToString(String.valueOf(TicketUtil.hashCode(tgcs[i])).getBytes()));
-        }
-        sb.append("-cas");
+        sb.append(tgcs);
         return sb.toString();
     }
 

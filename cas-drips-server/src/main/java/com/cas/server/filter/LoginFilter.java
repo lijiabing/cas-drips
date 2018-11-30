@@ -32,14 +32,21 @@ public class LoginFilter extends OncePerRequestFilter{
     }
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         Map<String,Object> cookieMap=CookieUtils.strToMap(request.getHeader("Cookie"));
         String tgcSession=(String) cookieMap.get("CASTGC");
+        if(request.getRequestURI().equalsIgnoreCase("/logout")||(request.getRequestURI().equalsIgnoreCase("/login/cas")&&tgcSession==null)){
+            filterChain.doFilter(request,response);
+            return;
+        }
+
         String ticket=request.getParameter("ticket");
         //判断是否有全局会话，有则重定向到原有的系统地址 并携带Set-Cookie（TGC）和ticket
         if(tgcSession!=null&&isExist(tgcSession)&&StringUtils.isEmpty(ticket)){
             String service=request.getParameter("service");
-            response.sendRedirect(URLDecoder.decode(service,"UTF-8")+"?ticket="+ TicketUtil.createTicket(service));
+            String lt=TicketUtil.createTicket(service);
+            Jedis jedis=redisConfig.getJedis();
+            jedis.setex(lt,300,lt);
+            response.sendRedirect(URLDecoder.decode(service,"UTF-8")+"?ticket="+ lt);
             return;
         }
         if(!cookieMap.containsKey("cas-session")){
@@ -55,7 +62,7 @@ public class LoginFilter extends OncePerRequestFilter{
         this.cookieLocaleResolver = cookieLocaleResolver;
     }
 
-    public boolean isExist(String key){
+    public   boolean isExist(String key){
         Jedis jedis=redisConfig.getJedis();
         if(jedis.exists(key)){
             return true;

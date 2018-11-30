@@ -2,6 +2,7 @@ package com.cas.server.dao;
 
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Administrator on 2018\11\23 0023.
@@ -11,6 +12,8 @@ public class TicketGrantToken implements Serializable{
 
     private String id;
     private User user;
+
+
 
     public String getId() {
         return id;
@@ -28,4 +31,6 @@ public class TicketGrantToken implements Serializable{
     public void setUser(User user) {
         this.user = user;
     }
+
+
 }
